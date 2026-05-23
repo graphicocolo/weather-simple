@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天気アプリ</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.11/dist/basecoat.cdn.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.11/dist/js/all.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="p-4">
+    <h1 class="text-2xl font-bold mb-6 text-center">天気アプリ</h1>
+    <form id="weather-form">
+      <div class="m-auto form mb-8 md:max-w-xs grid gap-4">
+        <div>
+          <label class="text-sm font-medium mb-2">都市名を入力</label>
+          <input type="text" name="task" placeholder="都市名" class="input flex-1" id="city-input">
+          <p id="city-input-error" class="text-red-500 text-sm mt-2"></p>
+        </div>
+      </div>
+      <div class="m-auto md:max-w-[200px] grid gap-4">
+        <button type="submit" class="btn btn-primary font-bold text-base cursor-pointer">天気を確認</button>
+        <button type="reset" class="btn btn-secondary font-bold text-base text-white bg-neutral-400">リセット</button>
+      </div>
+    </form>
+    <div id="loading" class="m-auto md:max-w-xl mt-10 px-4 py-8 hidden"><p class="text-center text-3xl text-neutral-400 font-bold"></p></div>
+    <div id="display-weather" class="m-auto md:max-w-xl mt-10 px-4 py-8 rounded hidden">
+      <h2 class="text-lg text-center text-neutral-700 font-bold mb-2"><span id="city-name"></span>の天気</h2>
+      <div class="md:flex md:items-center md:justify-center gap-4">
+        <p class="text-center text-3xl text-sky-700 font-bold" id="weather-condition"></p>
+        <p class="text-center text-sky-700 font-bold"><span class="text-4xl" id="temperature"></span><span class="text-lg">°C</span></p>
+      </div>
+      <div class="text-center">
+        <p id="weather-icon" class="inline-block"></p>
+      </div>
+    </div>
+    <div class="m-auto md:max-w-xl">
+      <a href="../index.html" class="mt-6 inline-block text-blue-500 hover:text-blue-700">課題トップへ</a>
+    </div>
+  </div>
+</body>
+</html>
