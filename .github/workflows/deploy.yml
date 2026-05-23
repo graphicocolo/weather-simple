@@ -21,7 +21,7 @@ jobs:
 
       - name: Create constants.js from secret
         run: |
-          echo "export const API_KEY = '${{ secrets.OPENWEATHER_API_KEY }}';" > constants.js
+          echo "export const API_KEY = '${{ secrets.WEATHERSIMPLE_API_KEY }}';" > constants.js
 
       - uses: actions/configure-pages@v6
         with:
