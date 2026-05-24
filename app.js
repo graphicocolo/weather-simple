@@ -1,4 +1,4 @@
-import { API_KEY } from "./constants.js";
+// import { API_KEY } from "./constants.js";
 // コードの構成
 // 1. HTML要素を取得
 // 2. API呼び出し、天気アイコン数値配列定義、天気表示エリア背景色配列定義
@@ -40,7 +40,8 @@ const weatherIconElement = document.querySelector('#weather-icon');
 async function fetchWeatherData(city) {
   loadingElement.children[0].textContent = "天気情報を読み込み中...";
   loadingElement.classList.remove("hidden");
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${API_KEY}`;
+  // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ja&appid=${API_KEY}`;
+  const url = `https://ancient-disk-0093.graphicocolo.workers.dev?city=${city}`;
   try {
     const response = await fetch(url);
     if (response.status === 404) {
