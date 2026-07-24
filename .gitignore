@@ -45,6 +45,7 @@ yarn-error.log*
 # API keys
 constants.js
 deployment.md
+security.md
 
 # vercel
 .vercel
