@@ -44,14 +44,14 @@ async function fetchWeatherData(city: string): Promise<WeatherResponse | null> {
   const url = `https://ancient-disk-0093.graphicocolo.workers.dev?city=${city}`;
   try {
     const response = await fetch(url);
-    if (response.status === 404) {
-      cityInputError.textContent = "入力された都市名が見つかりませんでした";
-      return null;
-    }
     if (!response.ok) {
       throw new Error(`HTTP: ${response.status}`);
     }
     const data = await response.json();
+    if (data.cod !== 200) {
+      cityInputError.textContent = "入力された都市名が見つかりませんでした";
+      return null;
+    }
     return data;
   } catch (error) {
     console.error("エラー:", error);
