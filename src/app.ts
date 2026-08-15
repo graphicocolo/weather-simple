@@ -1,5 +1,5 @@
 // コードの構成
-// 1. HTML要素を取得
+// 1. DOM 要素を取得
 // 2. API呼び出し、天気アイコン数値配列定義、天気表示エリア背景色配列定義
 // 3. 各関数を作成
 //  - submit ボタン状態の切り替え setSubmitEnabled()
@@ -11,32 +11,34 @@
 //  - submit
 //  - reset
 
-// 1. HTML要素を取得
-/** @type {HTMLTextAreaElement | null} */ 
-const cityInput = document.querySelector('#city-input');
-/** @type {HTMLParagraphElement | null} */
-const cityInputError = document.querySelector('#city-input-error');
-/** @type {HTMLFormElement | null} */ 
-const weatherForm = document.querySelector("#weather-form");
-/** @type {HTMLButtonElement | null} */
-const submitButton = document.querySelector("button[type='submit']");
-/** @type {HTMLButtonElement | null} */
-const resetButton = document.querySelector("button[type='reset']");
-/** @type {HTMLParagraphElement | null} */
-const loadingElement = document.querySelector('#loading');
-/** @type {HTMLDivElement | null} */
-const weatherDisplayElement = document.querySelector('#display-weather');
-/** @type {HTMLParagraphElement | null} */
-const cityNameElement = document.querySelector('#city-name');
-/** @type {HTMLParagraphElement | null} */
-const weatherConditionElement = document.querySelector('#weather-condition');
-/** @type {HTMLParagraphElement | null} */
-const temperatureElement = document.querySelector('#temperature');
-/** @type {HTMLImageElement | null} */
-const weatherIconElement = document.querySelector('#weather-icon');
+// 1. DOM 要素を取得
+
+// 要素の取得とチェック処理
+function requireElement<T extends Element>(selector: string): T {
+  const el = document.querySelector<T>(selector);
+  if (!el) throw new Error(`要素が見つかりません: ${selector}`);
+  return el;
+}
+
+const cityInput = requireElement<HTMLInputElement>("#city-input");
+const cityInputError = requireElement<HTMLParagraphElement>("#city-input-error");
+const weatherForm = requireElement<HTMLFormElement>("#weather-form");
+const submitButton = requireElement<HTMLButtonElement>("button[type='submit']");
+const loadingElement = requireElement<HTMLDivElement>("#loading");
+const weatherDisplayElement = requireElement<HTMLDivElement>("#display-weather");
+const cityNameElement = requireElement<HTMLSpanElement>("#city-name");
+const weatherConditionElement = requireElement<HTMLParagraphElement>("#weather-condition");
+const temperatureElement = requireElement<HTMLSpanElement>("#temperature");
+const weatherIconElement = requireElement<HTMLParagraphElement>("#weather-icon");
 
 // 2. API呼び出し
-async function fetchWeatherData(city) {
+interface WeatherResponse {
+  name: string;
+  weather: { description: string; icon: string }[];
+  main: { temp: number };
+}
+
+async function fetchWeatherData(city: string): Promise<WeatherResponse | null> {
   loadingElement.children[0].textContent = "天気情報を読み込み中...";
   loadingElement.classList.remove("hidden");
   const url = `https://ancient-disk-0093.graphicocolo.workers.dev?city=${city}`;
@@ -73,8 +75,8 @@ const bgStyleClasses = ["bg-sky-100", "bg-gray-200", "bg-slate-100", "bg-neutral
  * submit ボタン状態の切り替え
  * @param {boolean} enabled 活性化状態かどうか
  */
-function setSubmitEnabled(enabled) {
-  submitButton.disabled = !enabled;
+function setSubmitEnabled(enabled: boolean): void {
+  submitButton.disabled = !enabled; // ここでsubmitButtonをElementではなくHTMLButtonElementにしたい
   submitButton.classList.toggle("bg-gray-400", !enabled);
   submitButton.classList.toggle("cursor-not-allowed", !enabled);
   submitButton.classList.toggle("bg-gray-800", enabled);
@@ -86,7 +88,7 @@ setSubmitEnabled(false); // 初期状態は非活性化
  * 天気エリア表示判定
  * @returns {boolean} 判定結果
  */
-function weatherDisplayIsVisible() {
+function weatherDisplayIsVisible(): boolean {
   return !weatherDisplayElement.classList.contains("hidden");
 }
 
@@ -95,7 +97,7 @@ function weatherDisplayIsVisible() {
  * @param {HTMLInputElement} element DOM要素
  * @returns {boolean} バリデーション結果
  */
-function validateNotEmpty(element) {
+function validateNotEmpty(element: HTMLInputElement): boolean {
   return element.value.trim() !== "";
 }
 
@@ -136,7 +138,7 @@ weatherForm.addEventListener("submit", async (event) => {
   if (!weatherData) return;
   cityNameElement.textContent = weatherData.name;
   weatherConditionElement.textContent = weatherData.weather[0].description;
-  temperatureElement.textContent = weatherData.main.temp;
+  temperatureElement.textContent = weatherData.main.temp.toString();
   const iconCode = weatherData.weather[0].icon;
 
   // 天気表示エリア背景色切り替え
